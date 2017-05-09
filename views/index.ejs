@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投票首页</title>
+    <link href="../resources/css/index.css" rel="stylesheet" type="text/css">
+    <script src="/socket.io/socket.io.js"></script>
+    <!--<script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>-->
+    <!--<script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../resources/javascript/jquery-1.11.1.min.js"></script>
+    <!--<script src="../resources/javascript/bootstrap.js"></script>-->
+    <script src="../resources/javascript/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="background">
+    <div class="word-div">
+        <div class="col-md-12" style="display: flex;">
+            <div class="col-md-4" style="display: flex">
+                <div class="box">
+                    <div style="height: 35%;margin-top: 25%; margin-left:30%;border-left: 5px solid #e60111;border-top: 5px solid #e60111;"></div>
+                </div>
+                <div class="box" style="line-height: 100%;margin-top:3%;font-size: 50px;color: #e60111;font-weight: 900">正方</div>
+                <div class="box">
+                    <div style="height: 35%;margin-top: 25%; margin-right:30%;border-right: 5px solid #e60111;border-top: 5px solid #e60111;"></div>
+                </div>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="display: flex">
+                <div class="box">
+                    <div style="height: 35%;margin-top: 25%; margin-left:30%;border-left: 5px solid #00a2e8;border-top: 5px solid #00a2e8;"></div>
+                </div>
+                <div class="box" style="line-height: 100%;margin-top:3%;font-size: 50px;color: #00a2e8;font-weight: 900">反方</div>
+                <div class="box">
+                    <div style="height: 35%;margin-top: 25%; margin-right:30%;border-right: 5px solid #00a2e8;border-top: 5px solid #00a2e8;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="avatar">
+        <div class="col-md-12" style="height: auto;display: flex;">
+            <div class="col-md-4" style="display: flex">
+                <div class="box"><img class="person border-color-support" src="../resources/images/chenyun.png"></div>
+                <div class="box"><img class="person border-color-support" src="../resources/images/wuming.png"></div>
+                <div class="box"><img class="person border-color-support" src="../resources/images/daiping.png"></div>
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="display: flex">
+                <div class="box"><img class="person border-color-negative" src="../resources/images/dengxiaohua.jpg"></div>
+                <div class="box"><img class="person border-color-negative" src="../resources/images/sunyinheng.png"></div>
+                <div class="box"><img class="person border-color-negative" src="../resources/images/dongweilin.png"></div>
+            </div>
+        </div>
+    </div>
+    <div class="title">
+        <label style="font-size:60px;color: #000000">[ 传播量和品牌调性不能兼顾时，哪个更重要？]</label>
+        <!--<div class="col-md-12" style="height:auto;display: flex;margin-top: 10px">-->
+            <!--<div class="col-md-3"></div>-->
+            <!--<div class="col-md-6" style="display: flex;align-content: center;">-->
+                <!--<div style="text-align: left;width: 50%">-->
+                    <!--<span style="line-height: 100%; color: #e60111;font-size: 60px;font-weight: 900">正方</span>-->
+                <!--</div>-->
+                <!--<div style="text-align: right;width: 50%">-->
+                    <!--<span style="line-height: 100%; color: #00a2e8;font-size: 60px;font-weight: 900">反方</span>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-3"></div>-->
+        <!--</div>-->
+
+        <div class="voteInfo col-md-12" style="height: auto;">
+            <div class="col-md-3" style="text-align: right">
+                <span style="line-height: auto; color: #e60111;font-size: 75px;" id="A"><%= countOfA %> 票</span>
+            </div>
+            <div class="col-md-6" style="display: flex">
+                <div id="widthOfA" style="height:100%;background: #e60111;width: 50%"></div>
+                <div id="widthOfB" style="height:100%;background: #00a2e8;width:50%"></div>
+            </div>
+            <div class="col-md-3" style="text-align:left">
+                <span style="line-height: auto;font-size: 75px; color: #00a2e8;" id="B"><%= countOfB %> 票</span>
+            </div>
+        </div>
+        <div class="col-md-12" style="height:auto;display: flex;margin-top: 50px">
+            <div class="col-md-3"></div>
+            <div class="col-md-6" style="display: flex;align-content: center;">
+                <div style="text-align: left;width: 50%">
+                    <span style="line-height: 100%; color: #e60111;font-size: 60px;font-weight: 900">传播量</span>
+                </div>
+                <div style="text-align: right;width: 50%">
+                    <span style="line-height: 100%; color: #00a2e8;font-size: 60px;font-weight: 900">品牌调性</span>
+                </div>
+            </div>
+            <div class="col-md-3"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+  (function () {
+    var a = '<%= countOfA %>';
+    var b = '<%= countOfB %>';
+    var total = parseInt(a) + parseInt(b)
+    document.getElementById("widthOfA").style.width = total == 0 ? "50%" : (a / total) * 100 + "%"
+    document.getElementById("widthOfB").style.width = total == 0 ? "50%" : (1 - a / total) * 100 + "%"
+  }())
+
+  var socketIo = io();
+  socketIo.on('count', function (count) {
+    $('#A').html('<span>' + count.countOfA + ' 票</span>')
+    $('#B').html('<span>' + count.countOfB + ' 票</span>')
+    var total = count.countOfA + count.countOfB
+    document.getElementById("widthOfA").style.width = total == 0 ? "50%" : (count.countOfA / total) * 100 + "%"
+    document.getElementById("widthOfB").style.width = total == 0 ? "50%" : (1 - count.countOfA / total) * 100 + "%"
+  })
+</script>
+</body>
+
+</html>

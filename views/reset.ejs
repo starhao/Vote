@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="../resources/css/index.css" rel="stylesheet" type="text/css">
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../resources/javascript/jquery-1.11.1.min.js"></script>
+    <title>重置设置</title>
+</head>
+<body>
+
+<div class="col-sm-12 vote-button">
+    <div class="col-sm-offset-4 col-sm-4 button" style="border-radius: 1%;">
+        <a href="javascript:reset()">重置票数</a>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+  function reset() {
+    console.log('重置票数')
+    $.ajax({
+      type: 'get',
+      url: '/resetCount',
+      async: false,
+      error: function (err) {
+        alert('失败:' + err)
+      },
+      success: function (data) {
+        if (data) alert('重置成功');
+      }
+    })
+  }
+</script>

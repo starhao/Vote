@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>投票端</title>
+    <link href="../resources/css/index.css" rel="stylesheet" type="text/css">
+    <link href="../resources/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../resources/javascript/jquery-1.11.1.min.js"></script>
+    <script src="../resources/javascript/jquery.cookie.js"></script>
+    <script src="../resources/javascript/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="background background2">
+    <div class="container voteBox support">
+        <div class="col-sm-12" style="text-align: center;margin-top:20px;
+        font-size: 60px;color: white;">正方团队
+        </div>
+        <div class="col-sm-12 voted-support" style="text-align: center;margin-top:18px;
+        font-size: 50px;color: white; display: none">已投票
+        </div>
+        <div class="col-sm-12" style="display: flex;margin-top: 30px">
+            <div class="box"><img class="person vote-avatar" src="../resources/images/chenyun.png">
+                <div class="support-font">陈芸</div>
+                <div class="support-font" style="margin-top: 5px">武汉项目</div>
+            </div>
+            <div class="box"><img class="person vote-avatar" src="../resources/images/wuming.png">
+                <div class="support-font">吴明</div>
+                <div class="support-font" style="margin-top: 5px">影都项目</div>
+            </div>
+            <div class="box"><img class="person vote-avatar" src="../resources/images/daiping.png">
+                <div class="support-font">戴平</div>
+                <div class="support-font" style="margin-top: 5px">成都项目</div>
+            </div>
+        </div>
+        <div class="col-sm-12 vote-button vote-button-A" style="margin-bottom: 20px">
+            <div class="col-sm-offset-4 col-sm-4 button">
+                <a href="javascript:rec('A')" style="color: #ffffff">投票</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container voteBox negative">
+        <div class="col-sm-12" style="text-align: center;margin-top:20px;
+        font-size: 60px;color: white">反方团队
+        </div>
+        <div class="col-sm-12 voted-negative" style="text-align: center;margin-top:18px;
+        font-size: 60px;color: white; display: none ">已投票
+        </div>
+        <div class="col-sm-12" style="display: flex;margin-top: 30px">
+            <div class="box"><img class="person vote-avatar" src="../resources/images/dengxiaohua.jpg">
+                <div class="support-font">邓孝华</div>
+                <div class="support-font" style="margin-top: 5px">重庆项目</div>
+            </div>
+            <div class="box"><img class="person vote-avatar" src="../resources/images/sunyinheng.png">
+                <div class="support-font">孙胤恒</div>
+                <div class="support-font" style="margin-top: 5px">桂林项目</div>
+            </div>
+            <div class="box"><img class="person vote-avatar" src="../resources/images/dongweilin.png">
+                <div class="support-font">董玮麟</div>
+                <div class="support-font" style="margin-top: 5px">版纳项目</div>
+            </div>
+        </div>
+        <div class="col-sm-12 vote-button vote-button-B" style="margin-bottom: 20px">
+            <div class="col-sm-offset-4 col-sm-4 button">
+                <a href="javascript:rec('B')" style="color: white">投票</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+
+  (function () {
+    window.confirm = function (name) {
+      var iframe = document.createElement("IFRAME");
+      iframe.style.display = "none";
+      iframe.setAttribute("src", 'data:text/plain,');
+      document.documentElement.appendChild(iframe);
+      var result = window.frames[0].window.confirm(name);
+      iframe.parentNode.removeChild(iframe);
+      return result;
+    }
+
+    window.alert = function (name) {
+      var iframe = document.createElement("IFRAME");
+      iframe.style.display = "none";
+      iframe.setAttribute("src", 'data:text/plain,');
+      document.documentElement.appendChild(iframe);
+      window.frames[0].window.alert(name);
+      iframe.parentNode.removeChild(iframe);
+    }
+
+    if ('<%= statusOfVote %>' == 'A') {
+      $('.voted-support').css('display', 'block')
+      $('.vote-button-A').css('display', 'none')
+      $('.support').css('opacity', 1)
+
+      $('.voted-negative').css('display', 'none')
+      $('.vote-button-B').css('display', 'none')
+      $('.negative').css('opacity', 0.5)
+      $('.negative').css('background', '#000000')
+    } else if ('<%= statusOfVote %>' == "B") {
+      $('.voted-negative').css('display', 'block')
+      $('.vote-button-B').css('display', 'none')
+      $('.negative').css('opacity', 1)
+
+      $('.voted-support').css('display', 'none')
+      $('.vote-button-A').css('display', 'none')
+      $('.support').css('opacity', 0.5)
+      $('.support').css('background', '#000000')
+    }
+  })()
+
+  function rec(arg) {
+    var choose = arg == 'A' ? '正方' : '反方';
+    var message = confirm("确定为\"" + choose + "\"投票吗?");
+    if (message == true) {
+      vote(arg);
+    }
+  }
+
+  function vote(statusOfVote) {
+    var uid = $.cookie('uid') // 拿到用户的cookie
+    var obj = {uid, statusOfVote}
+    $.ajax({
+      type: "POST",
+      url: '/polling',
+      data: obj,
+      async: false,
+      error: function (request) {
+        alert('请求失败:' + JSON.stringify(request))
+      },
+      success: function (data) {
+        alert('投票成功')
+        if (statusOfVote == "A") {
+          $('.voted-support').css('display', 'block')
+          $('.vote-button-A').css('display', 'none')
+          $('.support').css('opacity', 1)
+
+          $('.voted-negative').css('display', 'none')
+          $('.vote-button-B').css('display', 'none')
+          $('.negative').css('opacity', 0.5)
+          $('.negative').css('background', '#000000')
+        } else if (statusOfVote == "B") {
+          $('.voted-negative').css('display', 'block')
+          $('.vote-button-B').css('display', 'none')
+          $('.negative').css('opacity', 1)
+
+          $('.voted-support').css('display', 'none')
+          $('.vote-button-A').css('display', 'none')
+          $('.support').css('opacity', 0.5)
+          $('.support').css('background', '#000000')
+        }
+      }
+    })
+  }
+</script>
+</body>
+
+</html>
