@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "vote count for wanda",
   "dependencies": {
-    "body-parser": "~1.15.1",
+    "body-parser": "^1.17.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.2.0",
     "ejs": "~2.4.1",
@@ -17,10 +17,13 @@
     "dong-node": "^1.0.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
+    "gulp-clean": "^0.3.2",
     "gulp-concat": "^2.6.1",
+    "gulp-eztasks": "^0.0.3",
     "gulp-minify-css": "^1.2.4",
     "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^2.1.2"
+    "gulp-uglify": "^2.1.2",
+    "gulp-util": "^3.0.8"
   },
   "main": "index.js",
   "repository": "https://Chris:w33445566@git.danwi.me/wanda/vote.git",
